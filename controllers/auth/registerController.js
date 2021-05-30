@@ -1,7 +1,11 @@
 const Joi = require('joi');
 import CustomErrorHandler  from '../../services/CustomErrorHandler.js'
-import { User} from '../../models'
+import { User ,RefreshToken} from '../../models'
 const bcrypt = require("bcrypt");
+import { REFRESH_SECRET } from '../../config'
+
+
+
 
 import JwtService from '../../services/JwtService';
 
@@ -66,11 +70,17 @@ import JwtService from '../../services/JwtService';
     });
 
   let access_token;
+  let refresh_token;
+
       
   try{
     const result = await user.save();
      console.log(result);
      access_token = JwtService.sign({ _id: result._id, role: result.role });
+     refresh_token = JwtService.sign({ _id: result._id, role: result.role }, '1y', REFRESH_SECRET);
+     await RefreshToken.create({ token: refresh_token });
+
+
   
   }
   catch(err){
@@ -79,7 +89,7 @@ import JwtService from '../../services/JwtService';
   
 
   }
-      res.json({  access_token:access_token})  
+      res.json({  access_token , refresh_token})  
 
     }
 }
