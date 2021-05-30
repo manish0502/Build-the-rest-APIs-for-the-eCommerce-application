@@ -7,14 +7,21 @@
     "dev": "nodemon -r esm server.js",
     "start": "node -r esm server.js"
   },
-  "keywords": ["javascript" ,"nodejs" ,"express" ,"Mongodb"],
+  "keywords": [
+    "javascript",
+    "nodejs",
+    "express",
+    "Mongodb"
+  ],
   "author": "Manish Giri",
   "license": "ISC",
   "dependencies": {
+    "config": "^3.3.6",
     "dotenv": "^10.0.0",
     "esm": "^3.2.25",
     "express": "^4.17.1",
-    "mongoose": "^5.12.12"
+    "joi": "^17.4.0",
+    "mongoose": "^5.12.7"
   },
   "devDependencies": {
     "nodemon": "^2.0.7"
