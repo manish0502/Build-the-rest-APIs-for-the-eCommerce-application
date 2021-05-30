@@ -1,7 +1,10 @@
 const Joi = require('joi');
 import CustomErrorHandler  from '../../services/CustomErrorHandler.js'
 import { User} from '../../models'
- 
+const bcrypt = require("bcrypt");
+
+import JwtService from '../../services/JwtService';
+
  const registerController = {
 
     async register(req,res,next) {
@@ -45,7 +48,38 @@ import { User} from '../../models'
 
     }
 
-      res.json({ msg:'hii from express'})  
+
+    // hash password 
+
+    const { name ,email, password } = req.body;
+
+    const hashpassword = await bcrypt.hash(password, 12);
+
+
+    // preparing for model 
+
+
+    const user = new User({
+      name,
+      email,
+      password: hashpassword,
+    });
+
+  let access_token;
+      
+  try{
+    const result = await user.save();
+     console.log(result);
+     access_token = JwtService.sign({ _id: result._id, role: result.role });
+  
+  }
+  catch(err){
+
+    return next(err);
+  
+
+  }
+      res.json({  access_token:access_token})  
 
     }
 }
