@@ -4,13 +4,14 @@ import errorHandler from './middlewares/errorHandler'
 const app = express();
 import routes from './routes';
 const connectDB = require('./config/db');
+import path from 'path';
 
 
 // Database connection 
 
 connectDB();
 
-
+global.appRoot = path.resolve(__dirname);
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use('/api',routes)
